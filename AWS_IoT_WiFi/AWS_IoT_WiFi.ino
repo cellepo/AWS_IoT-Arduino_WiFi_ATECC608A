@@ -21,19 +21,21 @@
 
   This example code is in the public domain.
 */
-
 #include <ArduinoBearSSL.h>
 #include <ArduinoECCX08.h>
 #include <ArduinoMqttClient.h>
 #include <WiFiNINA.h> // change to #include <WiFi101.h> for MKR1000
 
 #include "arduino_secrets.h"
+#include "properties.local.h"
 
 /////// Enter your sensitive data in arduino_secrets.h
 const char ssid[]        = SECRET_SSID;
 const char pass[]        = SECRET_PASS;
 const char broker[]      = SECRET_BROKER;
 const char* certificate  = SECRET_CERTIFICATE;
+
+const char mqttClientId[] = MQTT_CLIENT_ID;
 
 WiFiClient    wifiClient;            // Used for the TCP socket connection
 BearSSLClient sslClient(wifiClient); // Used for SSL/TLS connection, integrates with ECC508
@@ -57,13 +59,7 @@ void setup() {
   // Set the ECCX08 slot to use for the private key
   // and the accompanying public certificate for it
   sslClient.setEccSlot(0, certificate);
-
-  // Optional, set the client id used for MQTT,
-  // each device that is connected to the broker
-  // must have a unique client id. The MQTTClient will generate
-  // a client id for you based on the millis() value if not set
-  //
-  // mqttClient.setId("clientId");
+  mqttClient.setId(mqttClientId);
 
   // Set the message callback, this function is
   // called when the MQTTClient receives a message
