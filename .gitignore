@@ -1,5 +1,6 @@
 arduino_secrets.h
 libraries/
+properties.local.h
 
 ##############
 # C++ template
